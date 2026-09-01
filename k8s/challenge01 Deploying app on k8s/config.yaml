@@ -1,0 +1,8 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: app-config
+
+  # key value pair that defines the environment variable APP_MESSAGE
+data:
+  APP_MESSAGE: "Hello from Kubernetes ConfigMap!"

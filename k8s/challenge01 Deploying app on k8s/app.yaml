@@ -1,0 +1,30 @@
+apiVersion: apps/v1 
+kind: Deployment
+metadata:
+  name: swaggy-python
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: swaggy-python
+  template:
+    metadata:
+      labels:
+        app: swaggy-python
+    spec:
+      containers:
+        - name: swaggy-python
+          image: embarkx/hello-python
+          env:
+            - name: app_message
+              valueFrom:
+                configMapKeyRef:
+                  name: app-config
+                  key: APP_MESSAGE
+            - name: db_password
+              valueFrom:
+                secretKeyRef:
+                  name: db-secret
+                  key: DB_PASSWORD
+          ports:
+            - containerPort: 5000

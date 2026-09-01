@@ -1,0 +1,30 @@
+apiVersion: apps/v1 
+kind: Deployment
+metadata:
+  name: pookieapp
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: pookieapp
+  template:
+    metadata:
+      labels:
+        app: pookieapp
+    spec:
+      containers:
+        - name: pookieapp
+          image: nginx
+          env:
+            - name: app_message
+              valueFrom:
+                configMapKeyRef:
+                  name: app-config
+                  key: APP_MESSAGE
+            - name: db_password
+              valueFrom:
+                secretKeyRef:
+                  name: db-secret
+                  key: DB_PASSWORD
+          ports:
+            - containerPort: 80
