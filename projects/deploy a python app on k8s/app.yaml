@@ -1,0 +1,43 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: swaggy-python
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: swaggy-python
+  template:
+    metadata:
+      labels:
+        app: swaggy-python
+    spec:
+      containers:
+        - name: swaggy-python
+          image: embarkx/hello-python:latest
+          env:
+            - name: ENV_VALUE
+              valueFrom:
+                configMapKeyRef:
+                  name: swaggy-python-config
+                  key: HELLO_APP_MESSAGE
+            - name: DB_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: hello-db-secret
+                  key: HELLO_DB_PASSWORD
+          ports:
+            - containerPort: 3000
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: swaggy-python
+spec:
+  selector:
+    app: swaggy-python
+  type: NodePort
+  ports:
+    - port: 3000
+      targetPort: 3000  
+      nodePort: 32000
