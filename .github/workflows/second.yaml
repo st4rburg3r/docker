@@ -1,0 +1,13 @@
+name: second CI
+
+on: 
+    push
+
+jobs: 
+    build:
+        runs-on: ubuntu-latest
+
+        steps:
+            - name: Say Helloooo!
+              run: echo "Hello from second CI"
+              
