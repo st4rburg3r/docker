@@ -1,13 +1,35 @@
-name: second CI
+name: Hello Python app + docker
 
 on: 
-    push
+    push:
+    workflow_dispatch:
 
 jobs: 
-    build:
+    build-test:
         runs-on: ubuntu-latest
 
         steps:
-            - name: Say Helloooo!
-              run: echo "Hello from second CI"
+            - name: Checkout Code
+              run: echo " "
+
+            - name: Setup Python
+              run: echo " "
               
+            - name: Install dependencies
+              run: echo " "
+
+            - name: Run Test
+              run: echo " "
+
+    docker-build-push:
+        runs-on: ubuntu-latest
+
+        steps:
+            - name: Checkout Code
+              run: echo " "
+
+            - name: Login to Docker Hub
+              run: echo " "
+              
+            - name: Build and Push image
+              run: echo " "
