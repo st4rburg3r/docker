@@ -1,0 +1,49 @@
+name: docker-build-push
+
+on: 
+    push:
+    workflow_dispatch:
+
+jobs: 
+    build-test:
+        runs-on: ubuntu-latest
+
+        steps:
+            - name: Checkout Code
+              uses: actions/checkout@v7
+
+            - name: Setup Python
+              uses: actions/setup-python@v7
+              with:
+                python-version: '3.13' 
+                  
+            - name: Install dependencies
+              working-directory: containerize-a-python-app
+              run: |
+                python -m pip install --upgrade pip
+                pip install -r req.txt
+
+            - name: Run Smoke Test
+              working-directory: containerize-a-python-app
+              run: python -m py_compile main.py
+
+    docker-build-push:
+        runs-on: ubuntu-latest
+
+        steps:
+            - name: Checkout Code
+              uses: actions/checkout@v7
+
+            - name: Login to Docker Hub
+              uses: docker/login-action@v4
+              with:
+                username: ${{ secrets.DOCKER_USERNAME }}
+                password: ${{ secrets.DOCKER_PASSWORD }}
+
+            - name: Build and Push image
+              uses: docker/build-push-action@v7
+              with:
+                context: containerize-a-python-app
+                push: true
+                tags: |
+                  ${{ secrets.DOCKER_USERNAME }}/containerize-a-python-app:latest
