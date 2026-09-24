@@ -2,6 +2,10 @@ name: docker-build-push
 
 on: 
     push:
+      branches:
+        - main
+      paths:
+        - 'containerize-a-python-app/**'
     workflow_dispatch:
 
 jobs: 
